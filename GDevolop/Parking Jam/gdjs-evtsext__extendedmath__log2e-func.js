@@ -8,7 +8,7 @@ if (typeof gdjs.evtsExt__ExtendedMath__Log2e !== "undefined") {
 gdjs.evtsExt__ExtendedMath__Log2e = {};
 
 
-gdjs.evtsExt__ExtendedMath__Log2e.userFunc0xda20b0 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__ExtendedMath__Log2e.userFunc0xb00b38 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 eventsFunctionContext.returnValue = Math.LOG10E;
 };
@@ -17,7 +17,7 @@ gdjs.evtsExt__ExtendedMath__Log2e.eventsList0 = function(runtimeScene, eventsFun
 {
 
 
-gdjs.evtsExt__ExtendedMath__Log2e.userFunc0xda20b0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__ExtendedMath__Log2e.userFunc0xb00b38(runtimeScene, eventsFunctionContext);
 
 }
 

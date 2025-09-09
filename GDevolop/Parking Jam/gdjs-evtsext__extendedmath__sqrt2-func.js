@@ -8,7 +8,7 @@ if (typeof gdjs.evtsExt__ExtendedMath__Sqrt2 !== "undefined") {
 gdjs.evtsExt__ExtendedMath__Sqrt2 = {};
 
 
-gdjs.evtsExt__ExtendedMath__Sqrt2.userFunc0xeb16e0 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__ExtendedMath__Sqrt2.userFunc0xb00b38 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 eventsFunctionContext.returnValue = Math.SQRT2;
 };
@@ -17,7 +17,7 @@ gdjs.evtsExt__ExtendedMath__Sqrt2.eventsList0 = function(runtimeScene, eventsFun
 {
 
 
-gdjs.evtsExt__ExtendedMath__Sqrt2.userFunc0xeb16e0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__ExtendedMath__Sqrt2.userFunc0xb00b38(runtimeScene, eventsFunctionContext);
 
 }
 

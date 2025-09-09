@@ -8,7 +8,7 @@ if (typeof gdjs.evtsExt__ExtendedMath__Map !== "undefined") {
 gdjs.evtsExt__ExtendedMath__Map = {};
 
 
-gdjs.evtsExt__ExtendedMath__Map.userFunc0xeaa308 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__ExtendedMath__Map.userFunc0xbe8058 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 const n = eventsFunctionContext.getArgument("n");
 const min1 = eventsFunctionContext.getArgument("min1");
@@ -23,7 +23,7 @@ gdjs.evtsExt__ExtendedMath__Map.eventsList0 = function(runtimeScene, eventsFunct
 {
 
 
-gdjs.evtsExt__ExtendedMath__Map.userFunc0xeaa308(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__ExtendedMath__Map.userFunc0xbe8058(runtimeScene, eventsFunctionContext);
 
 }
 

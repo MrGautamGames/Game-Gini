@@ -8,7 +8,7 @@ if (typeof gdjs.evtsExt__ExtendedMath__Gcf !== "undefined") {
 gdjs.evtsExt__ExtendedMath__Gcf = {};
 
 
-gdjs.evtsExt__ExtendedMath__Gcf.userFunc0xd9f030 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__ExtendedMath__Gcf.userFunc0x911ef0 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 //uses Euclid's algorithm
 function gcf(a, b) {
@@ -42,7 +42,7 @@ gdjs.evtsExt__ExtendedMath__Gcf.eventsList0 = function(runtimeScene, eventsFunct
 {
 
 
-gdjs.evtsExt__ExtendedMath__Gcf.userFunc0xd9f030(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__ExtendedMath__Gcf.userFunc0x911ef0(runtimeScene, eventsFunctionContext);
 
 }
 

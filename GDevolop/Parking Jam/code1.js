@@ -418,7 +418,7 @@ gdjs.GameCode.eventsList3(runtimeScene);} //End of subevents
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15169836);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15416156);
 }
 if (isConditionTrue_0) {
 gdjs.copyArray(runtimeScene.getObjects("Grass"), gdjs.GameCode.GDGrassObjects2);
@@ -843,7 +843,7 @@ for (var i = 0, k = 0, l = gdjs.GameCode.GDCarObjects3.length;i<l;++i) {
 gdjs.GameCode.GDCarObjects3.length = k;
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15198476);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15444948);
 }
 }
 if (isConditionTrue_0) {
@@ -997,7 +997,7 @@ isConditionTrue_0 = false;
 isConditionTrue_0 = gdjs.physics2.haveObjectsStartedColliding(gdjs.GameCode.mapOfGDgdjs_9546GameCode_9546GDCarObjects2ObjectsGDgdjs_9546GameCode_9546GDObstacleObjects2Objects, "Physics2", gdjs.GameCode.mapOfGDgdjs_9546GameCode_9546GDCarObjects2ObjectsGDgdjs_9546GameCode_9546GDObstacleObjects2Objects, false);
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15200940);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15447508);
 }
 }
 }
@@ -1064,7 +1064,7 @@ if (isConditionTrue_0) {
 }
 
 
-};gdjs.GameCode.asyncCallback14821924 = function (runtimeScene, asyncObjectsList) {
+};gdjs.GameCode.asyncCallback15422140 = function (runtimeScene, asyncObjectsList) {
 asyncObjectsList.restoreLocalVariablesContainers(gdjs.GameCode.localVariables);
 
 { //Subevents
@@ -1080,7 +1080,7 @@ gdjs.GameCode.eventsList13 = function(runtimeScene) {
 {
 const asyncObjectsList = new gdjs.LongLivedObjectsList();
 asyncObjectsList.backupLocalVariablesContainers(gdjs.GameCode.localVariables);
-runtimeScene.getAsyncTasksManager().addTask(gdjs.evtTools.runtimeScene.wait(0.25), (runtimeScene) => (gdjs.GameCode.asyncCallback14821924(runtimeScene, asyncObjectsList)));
+runtimeScene.getAsyncTasksManager().addTask(gdjs.evtTools.runtimeScene.wait(0.25), (runtimeScene) => (gdjs.GameCode.asyncCallback15422140(runtimeScene, asyncObjectsList)));
 }
 }
 
@@ -1154,7 +1154,7 @@ gdjs.GameCode.eventsList14(runtimeScene);} //End of subevents
 }
 
 
-};gdjs.GameCode.asyncCallback14987356 = function (runtimeScene, asyncObjectsList) {
+};gdjs.GameCode.asyncCallback15434876 = function (runtimeScene, asyncObjectsList) {
 asyncObjectsList.restoreLocalVariablesContainers(gdjs.GameCode.localVariables);
 {gdjs.evtTools.runtimeScene.replaceScene(runtimeScene, "Title Screen", false);
 }gdjs.GameCode.localVariables.length = 0;
@@ -1168,7 +1168,7 @@ gdjs.GameCode.eventsList16 = function(runtimeScene) {
 {
 const asyncObjectsList = new gdjs.LongLivedObjectsList();
 asyncObjectsList.backupLocalVariablesContainers(gdjs.GameCode.localVariables);
-runtimeScene.getAsyncTasksManager().addTask(gdjs.evtTools.runtimeScene.wait(0.25), (runtimeScene) => (gdjs.GameCode.asyncCallback14987356(runtimeScene, asyncObjectsList)));
+runtimeScene.getAsyncTasksManager().addTask(gdjs.evtTools.runtimeScene.wait(0.25), (runtimeScene) => (gdjs.GameCode.asyncCallback15434876(runtimeScene, asyncObjectsList)));
 }
 }
 
@@ -1223,7 +1223,7 @@ gdjs.GameCode.eventsList17(runtimeScene);} //End of subevents
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15076052);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15388012);
 }
 if (isConditionTrue_0) {
 gdjs.copyArray(runtimeScene.getObjects("NextLevel_Button"), gdjs.GameCode.GDNextLevel_9595ButtonObjects3);
@@ -1284,7 +1284,7 @@ gdjs.GameCode.eventsList21 = function(runtimeScene) {
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(14919076);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15436212);
 }
 if (isConditionTrue_0) {
 gdjs.copyArray(runtimeScene.getObjects("Car"), gdjs.GameCode.GDCarObjects4);
@@ -1366,7 +1366,7 @@ gdjs.GameCode.eventsList22 = function(runtimeScene) {
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15133044);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15392788);
 }
 if (isConditionTrue_0) {
 gdjs.copyArray(runtimeScene.getObjects("Car"), gdjs.GameCode.GDCarObjects2);
@@ -1525,7 +1525,7 @@ for (var i = 0, k = 0, l = gdjs.GameCode.GDGdevelopGLogoWhiteObjects4.length;i<l
 gdjs.GameCode.GDGdevelopGLogoWhiteObjects4.length = k;
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(14760844);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15458532);
 }
 }
 if (isConditionTrue_0) {
@@ -1664,7 +1664,7 @@ for (var i = 0, k = 0, l = gdjs.GameCode.GDGdevelopGLogoWhiteObjects2.length;i<l
 gdjs.GameCode.GDGdevelopGLogoWhiteObjects2.length = k;
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15188524);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15461748);
 }
 }
 if (isConditionTrue_0) {
@@ -1724,7 +1724,7 @@ isConditionTrue_0 = false;
 }
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(14926820);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15391724);
 }
 }
 if (isConditionTrue_0) {
@@ -1763,7 +1763,7 @@ isConditionTrue_0 = false;
 isConditionTrue_0 = gdjs.evtTools.input.isMouseButtonPressed(runtimeScene, "Left");
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(14939940);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15351468);
 }
 }
 }
@@ -1813,7 +1813,7 @@ isConditionTrue_0 = false;
 isConditionTrue_0 = gdjs.evtTools.object.getSceneInstancesCount(runtimeScene, gdjs.GameCode.mapOfEmptyGDCarObjects) == 0;
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15181324);
+{isConditionTrue_0 = runtimeScene.getOnceTriggers().triggerOnce(15451236);
 }
 }
 if (isConditionTrue_0) {

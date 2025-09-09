@@ -229,7 +229,7 @@ isConditionTrue_0 = false;
 isConditionTrue_0 = gdjs.evtTools.input.isMouseButtonPressed(runtimeScene, eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getMouseButton());
 if (isConditionTrue_0) {
 isConditionTrue_0 = false;
-{isConditionTrue_0 = eventsFunctionContext.getOnceTriggers().triggerOnce(14773220);
+{isConditionTrue_0 = eventsFunctionContext.getOnceTriggers().triggerOnce(15115860);
 }
 }
 if (isConditionTrue_0) {
