@@ -114,6 +114,14 @@
             border: 3px solid rgba(255, 255, 255, 0.4);
         }
 
+        .next-monster-display.locked {
+            cursor: not-allowed;
+            opacity: 0.5;
+            animation: none;
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+            border-color: rgba(255, 0, 0, 0.4);
+        }
+
         /* Next Monster Size Classes - Extended to more levels */
         .next-monster-display.monster-1 { width: 45px; height: 45px; font-size: 28px; }
         .next-monster-display.monster-2 { width: 48px; height: 48px; font-size: 30px; }
@@ -131,7 +139,7 @@
             to { box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6); }
         }
 
-        .next-monster-display:hover {
+        .next-monster-display:hover:not(.locked) {
             transform: scale(1.1);
         }
 
@@ -157,12 +165,22 @@
             backdrop-filter: blur(5px);
         }
 
+        .drop-zone.locked {
+            cursor: not-allowed;
+            background: linear-gradient(to bottom, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.05));
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+
         .drop-zone-text {
             color: rgba(0, 200, 255, 0.8);
             font-size: 12px;
             font-weight: 600;
             text-align: center;
             pointer-events: none;
+        }
+
+        .drop-zone.locked .drop-zone-text {
+            color: rgba(255, 0, 0, 0.8);
         }
 
         .drop-zone.active {
@@ -572,7 +590,7 @@
     <div id="startScreen" class="menu-screen">
         <div class="menu-content">
             <h1 class="game-title">🪣 MONSTER MERGE 🧌</h1>
-            <p class="menu-subtitle">Fixed gravity! Normal falling speed on mobile and desktop!</p>
+            <p class="menu-subtitle">Perfect physics! Same speed on all devices! Wait for monsters to settle!</p>
             <div style="margin: 30px 0;">
                 <button class="menu-button" onclick="startGame()">🚀 START MERGING</button>
                 <button class="menu-button" onclick="showHowToPlay()">📖 HOW TO PLAY</button>
@@ -590,32 +608,31 @@
 
             <div class="guide-section">
                 <h3>🎯 Professional Drop System</h3>
-                <p>Click in the DROP ZONE above the basket to drop monsters! Normal gravity speed on all devices.</p>
+                <p>Click in the DROP ZONE to drop monsters! Wait for previous monster to settle before dropping next one.</p>
+            </div>
+
+            <div class="guide-section">
+                <h3>⏱️ Drop Timing System</h3>
+                <ul>
+                    <li><strong>Wait for Settling:</strong> Can't drop until previous monster settles properly</li>
+                    <li><strong>Visual Feedback:</strong> Drop zone turns red when locked</li>
+                    <li><strong>Perfect Timing:</strong> Ensures stable physics and better gameplay</li>
+                    <li><strong>Device Independent:</strong> Same falling speed on all devices!</li>
+                </ul>
             </div>
 
             <div class="guide-section">
                 <h3>🧌 20 Monster Levels!</h3>
                 <ul>
                     <li><strong>More Varieties:</strong> 20 different monster levels for extended gameplay</li>
-                    <li><strong>Faster Filling:</strong> More lower-level monsters means quicker bucket action</li>
                     <li><strong>Heavy Physics:</strong> Once dropped, monsters stay down - no bouncing up!</li>
-                    <li><strong>Perfect Speed:</strong> Normal falling speed on mobile and desktop!</li>
-                </ul>
-            </div>
-
-            <div class="guide-section">
-                <h3>⚡ Enhanced Physics</h3>
-                <ul>
-                    <li>Fixed gravity for perfect falling speed</li>
-                    <li>No bouncing up and out of the basket</li>
-                    <li>Realistic collision detection</li>
-                    <li>Stable merging without disturbance</li>
+                    <li><strong>Perfect Physics:</strong> Identical performance on mobile and desktop!</li>
                 </ul>
             </div>
 
             <div class="guide-section">
                 <h3>📱 Controls</h3>
-                <p><strong>Desktop & Mobile:</strong> Click in the blue drop zone above the basket</p>
+                <p><strong>Desktop & Mobile:</strong> Click in the drop zone when it's available (blue)</p>
             </div>
 
             <button class="menu-button" onclick="hideHowToPlay()">🪣 START MERGING</button>
@@ -668,7 +685,7 @@
         <div class="game-canvas-container">
             <!-- Top Drop Zone -->
             <div class="drop-zone" id="dropZone">
-                <div class="drop-zone-text">🎯 DROP ZONE<br>Click here to drop!</div>
+                <div class="drop-zone-text" id="dropZoneText">🎯 DROP ZONE<br>Click here to drop!</div>
             </div>
 
             <!-- Main Game Canvas -->
@@ -697,13 +714,19 @@
         let highestLevel = 1;
         let monsters = []; // Array of physics monsters
         let nextMonsterType = 1;
+        let dropLocked = false; // Lock dropping until monster settles
 
-        // FIXED physics constants for proper gravity on all devices
-        const GRAVITY = 0.6; // INCREASED from 0.35 for normal falling speed
-        const BOUNCE_DAMPING = 0.2; // Slightly increased for more realistic bouncing
-        const FRICTION = 0.92;
-        const SETTLE_THRESHOLD = 1.2; // Slightly increased for better settling
-        const HEAVY_FACTOR = 0.1; // Heavy multiplier after settling
+        // DEVICE-INDEPENDENT physics using performance.now()
+        let lastFrameTime = 0;
+        const TARGET_FPS = 60;
+        const FRAME_TIME = 1000 / TARGET_FPS;
+
+        // Physics constants - SAME on ALL devices using time-based calculation
+        const GRAVITY_PER_SECOND = 800; // pixels per second squared
+        const BOUNCE_DAMPING = 0.2;
+        const FRICTION_PER_SECOND = 0.95; // per second
+        const SETTLE_THRESHOLD = 20; // pixels per second
+        const HEAVY_FACTOR = 0.1;
 
         // EXTENDED Size hierarchy - 20 levels for more variety!
         const MONSTER_SIZES = {
@@ -791,6 +814,41 @@
             const nextElement = document.getElementById('nextMonster');
             nextElement.textContent = monsterTypes[nextMonsterType].emoji;
             nextElement.className = `next-monster-display monster-${nextMonsterType}`;
+
+            // Update locked state
+            if (dropLocked) {
+                nextElement.classList.add('locked');
+            }
+        }
+
+        // Update drop lock state
+        function updateDropLockState() {
+            const dropZone = document.getElementById('dropZone');
+            const dropZoneText = document.getElementById('dropZoneText');
+            const nextMonster = document.getElementById('nextMonster');
+
+            if (dropLocked) {
+                dropZone.classList.add('locked');
+                nextMonster.classList.add('locked');
+                dropZoneText.innerHTML = '⏱️ WAIT<br>Monster settling...';
+            } else {
+                dropZone.classList.remove('locked');
+                nextMonster.classList.remove('locked');
+                dropZoneText.innerHTML = '🎯 DROP ZONE<br>Click here to drop!';
+            }
+        }
+
+        // Check if all monsters are settled
+        function checkAllMonstersSettled() {
+            for (const monster of monsters) {
+                if (!monster.settled && !monster.merging) {
+                    const speed = Math.sqrt(monster.vx * monster.vx + monster.vy * monster.vy);
+                    if (speed > SETTLE_THRESHOLD / TARGET_FPS) {
+                        return false; // Still moving
+                    }
+                }
+            }
+            return true; // All settled
         }
 
         // Check if there's space for new monster - EXTENDED to 20 levels
@@ -833,7 +891,7 @@
 
         // Drop monster from drop zone
         function dropMonster(x) {
-            if (gameState !== 'playing') return;
+            if (gameState !== 'playing' || dropLocked) return;
 
             if (!canDropMonster()) {
                 gameOver();
@@ -853,7 +911,7 @@
                 element: null,
                 merging: false,
                 settled: false,
-                heavy: false, // New heavy state
+                heavy: false,
                 settleTimer: 0
             };
 
@@ -870,6 +928,10 @@
 
             monsters.push(monster);
 
+            // LOCK dropping until this monster settles
+            dropLocked = true;
+            updateDropLockState();
+
             generateNextMonster();
             updateHUD();
 
@@ -880,49 +942,68 @@
             }
         }
 
-        // Physics simulation loop
+        // Physics simulation loop with DEVICE-INDEPENDENT timing
         let physicsRunning = false;
 
         function startPhysicsLoop() {
             if (physicsRunning) return;
             physicsRunning = true;
+            lastFrameTime = performance.now();
             requestAnimationFrame(physicsStep);
         }
 
-        function physicsStep() {
+        function physicsStep(currentTime) {
             if (gameState !== 'playing' || monsters.length === 0) {
                 physicsRunning = false;
                 return;
             }
 
+            // Calculate delta time for device-independent physics
+            const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+            lastFrameTime = currentTime;
+
+            // Cap delta time to prevent physics explosions
+            const cappedDeltaTime = Math.min(deltaTime, 1/30); // Max 30fps equivalent
+
+            // Update physics for all monsters with time-based calculations
             for (let i = 0; i < monsters.length; i++) {
-                updateMonsterPhysics(monsters[i]);
+                updateMonsterPhysics(monsters[i], cappedDeltaTime);
             }
 
+            // Check for collisions and merges
             checkCollisionsAndMerges();
+
+            // Check if we can unlock dropping
+            if (dropLocked && checkAllMonstersSettled()) {
+                dropLocked = false;
+                updateDropLockState();
+            }
+
+            // Continue physics loop
             requestAnimationFrame(physicsStep);
         }
 
-        // Update individual monster physics - FIXED GRAVITY for normal speed!
-        function updateMonsterPhysics(monster) {
+        // Update individual monster physics - DEVICE-INDEPENDENT with time-based calculation!
+        function updateMonsterPhysics(monster, deltaTime) {
             if (monster.merging) return;
 
-            // Apply NORMAL gravity (increased for proper falling speed)
+            // Apply DEVICE-INDEPENDENT gravity
             if (!monster.settled) {
                 const gravityMultiplier = monster.heavy ? 0.8 : 1;
-                monster.vy += GRAVITY * gravityMultiplier; // Normal gravity now
+                monster.vy += (GRAVITY_PER_SECOND * gravityMultiplier) * deltaTime;
             }
 
-            // Update position
-            monster.x += monster.vx;
-            monster.y += monster.vy;
+            // Update position with time-based movement
+            monster.x += monster.vx * deltaTime * TARGET_FPS; // Normalize for 60fps equivalent
+            monster.y += monster.vy * deltaTime * TARGET_FPS;
 
-            // Apply friction (more friction for heavy monsters)
-            const frictionMultiplier = monster.heavy ? 0.88 : FRICTION;
-            monster.vx *= frictionMultiplier;
+            // Apply friction with time-based calculation
+            const frictionMultiplier = monster.heavy ? 0.88 : FRICTION_PER_SECOND;
+            const frictionFactor = Math.pow(frictionMultiplier, deltaTime);
+            monster.vx *= frictionFactor;
 
             if (monster.settled || monster.heavy) {
-                monster.vy *= 0.75; // Heavy damping for settled/heavy monsters
+                monster.vy *= Math.pow(0.75, deltaTime); // Heavy damping
             }
 
             // Boundary collisions
@@ -936,7 +1017,7 @@
                 monster.vx = -monster.vx * BOUNCE_DAMPING;
             }
 
-            // Bottom collision with HEAVY SETTLING (LIMITED BOUNCING!)
+            // Bottom collision with HEAVY SETTLING
             if (monster.y + monster.radius > worldHeight - 25) {
                 monster.y = worldHeight - 25 - monster.radius;
 
@@ -948,14 +1029,16 @@
 
                 // Limited bounce for heavy monsters
                 if (monster.heavy) {
-                    monster.vy = Math.min(0, monster.vy * 0.15); // Very limited upward movement
+                    monster.vy = Math.min(0, monster.vy * 0.15);
                 } else {
                     monster.vy = -monster.vy * BOUNCE_DAMPING;
                 }
 
-                // Check for settling (easier for heavy monsters)
-                const settleThreshold = monster.heavy ? 0.5 : SETTLE_THRESHOLD;
-                if (Math.abs(monster.vy) < settleThreshold && Math.abs(monster.vx) < settleThreshold) {
+                // Check for settling with time-independent threshold
+                const speed = Math.sqrt(monster.vx * monster.vx + monster.vy * monster.vy);
+                const settleThreshold = monster.heavy ? SETTLE_THRESHOLD * 0.5 : SETTLE_THRESHOLD;
+
+                if (speed < settleThreshold / TARGET_FPS) {
                     monster.settled = true;
                     monster.vy = 0;
                     monster.vx *= 0.8;
@@ -985,7 +1068,7 @@
                     const minDistance = m1.radius + m2.radius;
 
                     if (distance < minDistance) {
-                        if (m1.type === m2.type && m1.type < 20) { // Extended to level 20
+                        if (m1.type === m2.type && m1.type < 20) {
                             mergeMonsters(i, j);
                             return;
                         } else {
@@ -1007,7 +1090,7 @@
                                 const separationVelocityX = relativeVelocityX * separationX / minDistance;
                                 const separationVelocityY = relativeVelocityY * separationY / minDistance;
 
-                                m1.vx -= separationVelocityX * 0.4; // Slightly increased impact
+                                m1.vx -= separationVelocityX * 0.4;
                                 m1.vy -= separationVelocityY * 0.4;
                                 m2.vx += separationVelocityX * 0.4;
                                 m2.vy += separationVelocityY * 0.4;
@@ -1045,7 +1128,7 @@
                     type: newLevel,
                     x: (m1.x + m2.x) / 2,
                     y: (m1.y + m2.y) / 2,
-                    vx: (m1.vx + m2.vx) * 0.3, // Reduced velocity
+                    vx: (m1.vx + m2.vx) * 0.3,
                     vy: (m1.vy + m2.vy) * 0.3,
                     radius: newRadius,
                     element: null,
@@ -1130,7 +1213,7 @@
         // Clear basket - RELOAD PAGE to prevent bugs
         function clearBasket() {
             if (confirm('Clear the basket? This will start a fresh game.')) {
-                location.reload(); // Complete page refresh
+                location.reload();
             }
         }
 
@@ -1175,6 +1258,7 @@
             // Reset game state
             score = 0;
             highestLevel = 1;
+            dropLocked = false;
             monsters.forEach(monster => {
                 if (monster.element) monster.element.remove();
             });
@@ -1183,19 +1267,24 @@
             generateNextMonster();
             setupPhysicsWorld();
             updateHUD();
+            updateDropLockState();
 
             // Setup drop zone click handler
             const dropZone = document.getElementById('dropZone');
             dropZone.onclick = (e) => {
+                if (dropLocked) return; // Ignore clicks when locked
+
                 const rect = dropZone.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 dropMonster(x);
 
                 // Visual feedback
-                dropZone.classList.add('active');
-                setTimeout(() => {
-                    dropZone.classList.remove('active');
-                }, 200);
+                if (!dropLocked) {
+                    dropZone.classList.add('active');
+                    setTimeout(() => {
+                        dropZone.classList.remove('active');
+                    }, 200);
+                }
             };
 
             playSound(440, 0.3, 'sine', 0.08);
@@ -1203,7 +1292,7 @@
 
         // Restart game - RELOAD PAGE to prevent bugs
         function restartGame() {
-            location.reload(); // Complete page refresh
+            location.reload();
         }
 
         // Show start screen
