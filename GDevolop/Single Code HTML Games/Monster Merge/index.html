@@ -116,10 +116,10 @@
 
         .next-monster-display.locked {
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.6;
             animation: none;
-            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
-            border-color: rgba(255, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 100, 0, 0.5);
+            border-color: rgba(255, 100, 0, 0.4);
         }
 
         /* Next Monster Size Classes - Extended to more levels */
@@ -167,8 +167,8 @@
 
         .drop-zone.locked {
             cursor: not-allowed;
-            background: linear-gradient(to bottom, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.05));
-            border-color: rgba(255, 0, 0, 0.3);
+            background: linear-gradient(to bottom, rgba(255, 100, 0, 0.1), rgba(255, 100, 0, 0.05));
+            border-color: rgba(255, 100, 0, 0.3);
         }
 
         .drop-zone-text {
@@ -180,7 +180,7 @@
         }
 
         .drop-zone.locked .drop-zone-text {
-            color: rgba(255, 0, 0, 0.8);
+            color: rgba(255, 100, 0, 0.8);
         }
 
         .drop-zone.active {
@@ -590,7 +590,7 @@
     <div id="startScreen" class="menu-screen">
         <div class="menu-content">
             <h1 class="game-title">🪣 MONSTER MERGE 🧌</h1>
-            <p class="menu-subtitle">Perfect physics! Same speed on all devices! Wait for monsters to settle!</p>
+            <p class="menu-subtitle">Smart physics! No overlapping! Intelligent drop timing!</p>
             <div style="margin: 30px 0;">
                 <button class="menu-button" onclick="startGame()">🚀 START MERGING</button>
                 <button class="menu-button" onclick="showHowToPlay()">📖 HOW TO PLAY</button>
@@ -607,32 +607,32 @@
             </h2>
 
             <div class="guide-section">
-                <h3>🎯 Professional Drop System</h3>
-                <p>Click in the DROP ZONE to drop monsters! Wait for previous monster to settle before dropping next one.</p>
+                <h3>🎯 Smart Drop System</h3>
+                <p>Click in the DROP ZONE to drop monsters! Smart timing prevents overlapping and physics issues.</p>
             </div>
 
             <div class="guide-section">
-                <h3>⏱️ Drop Timing System</h3>
+                <h3>⚡ Intelligent Physics</h3>
                 <ul>
-                    <li><strong>Wait for Settling:</strong> Can't drop until previous monster settles properly</li>
-                    <li><strong>Visual Feedback:</strong> Drop zone turns red when locked</li>
-                    <li><strong>Perfect Timing:</strong> Ensures stable physics and better gameplay</li>
-                    <li><strong>Device Independent:</strong> Same falling speed on all devices!</li>
+                    <li><strong>Anti-Overlap:</strong> Prevents monsters from stacking incorrectly</li>
+                    <li><strong>Smart Timing:</strong> Unlocks only when physics are stable</li>
+                    <li><strong>Collision Resolution:</strong> Proper separation and settling</li>
+                    <li><strong>Merge Detection:</strong> Reliable merging without blocking</li>
                 </ul>
             </div>
 
             <div class="guide-section">
                 <h3>🧌 20 Monster Levels!</h3>
                 <ul>
-                    <li><strong>More Varieties:</strong> 20 different monster levels for extended gameplay</li>
-                    <li><strong>Heavy Physics:</strong> Once dropped, monsters stay down - no bouncing up!</li>
-                    <li><strong>Perfect Physics:</strong> Identical performance on mobile and desktop!</li>
+                    <li><strong>Progressive Evolution:</strong> 20 different monsters to discover</li>
+                    <li><strong>Smart Physics:</strong> Each size handled perfectly</li>
+                    <li><strong>No Blocking:</strong> Physics engine prevents stuck situations</li>
                 </ul>
             </div>
 
             <div class="guide-section">
                 <h3>📱 Controls</h3>
-                <p><strong>Desktop & Mobile:</strong> Click in the drop zone when it's available (blue)</p>
+                <p><strong>Desktop & Mobile:</strong> Click in drop zone when available (blue = ready, orange = wait)</p>
             </div>
 
             <button class="menu-button" onclick="hideHowToPlay()">🪣 START MERGING</button>
@@ -714,19 +714,19 @@
         let highestLevel = 1;
         let monsters = []; // Array of physics monsters
         let nextMonsterType = 1;
-        let dropLocked = false; // Lock dropping until monster settles
+        let dropLocked = false; // Lock dropping until physics stable
 
         // DEVICE-INDEPENDENT physics using performance.now()
         let lastFrameTime = 0;
         const TARGET_FPS = 60;
         const FRAME_TIME = 1000 / TARGET_FPS;
 
-        // Physics constants - SAME on ALL devices using time-based calculation
-        const GRAVITY_PER_SECOND = 800; // pixels per second squared
-        const BOUNCE_DAMPING = 0.2;
-        const FRICTION_PER_SECOND = 0.95; // per second
-        const SETTLE_THRESHOLD = 20; // pixels per second
-        const HEAVY_FACTOR = 0.1;
+        // Physics constants - INTELLIGENT OVERLAP PREVENTION
+        const GRAVITY_PER_SECOND = 800; // Slightly increased for faster settling
+        const BOUNCE_DAMPING = 0.25;
+        const FRICTION_PER_SECOND = 0.94;
+        const SETTLE_THRESHOLD = 15; // Lower threshold for faster unlocking
+        const MAX_OVERLAP_ITERATIONS = 5; // Prevent infinite overlap resolution
 
         // EXTENDED Size hierarchy - 20 levels for more variety!
         const MONSTER_SIZES = {
@@ -830,7 +830,7 @@
             if (dropLocked) {
                 dropZone.classList.add('locked');
                 nextMonster.classList.add('locked');
-                dropZoneText.innerHTML = '⏱️ WAIT<br>Monster settling...';
+                dropZoneText.innerHTML = '⏱️ PHYSICS<br>Stabilizing...';
             } else {
                 dropZone.classList.remove('locked');
                 nextMonster.classList.remove('locked');
@@ -838,17 +838,40 @@
             }
         }
 
-        // Check if all monsters are settled
-        function checkAllMonstersSettled() {
+        // INTELLIGENT physics stability check - prevents overlapping issues
+        function isPhysicsStable() {
+            // Check 1: All monsters have low velocity
             for (const monster of monsters) {
-                if (!monster.settled && !monster.merging) {
+                if (!monster.merging) {
                     const speed = Math.sqrt(monster.vx * monster.vx + monster.vy * monster.vy);
                     if (speed > SETTLE_THRESHOLD / TARGET_FPS) {
-                        return false; // Still moving
+                        return false;
                     }
                 }
             }
-            return true; // All settled
+
+            // Check 2: No significant overlaps (allows for small physics overlaps)
+            for (let i = 0; i < monsters.length; i++) {
+                for (let j = i + 1; j < monsters.length; j++) {
+                    const m1 = monsters[i];
+                    const m2 = monsters[j];
+
+                    if (m1.merging || m2.merging) continue;
+
+                    const dx = m1.x - m2.x;
+                    const dy = m1.y - m2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = m1.radius + m2.radius;
+                    const overlap = minDistance - distance;
+
+                    // Allow small overlaps (physics compression) but prevent major overlaps
+                    if (overlap > Math.min(m1.radius, m2.radius) * 0.3) {
+                        return false; // Too much overlap
+                    }
+                }
+            }
+
+            return true; // Physics are stable
         }
 
         // Check if there's space for new monster - EXTENDED to 20 levels
@@ -928,7 +951,7 @@
 
             monsters.push(monster);
 
-            // LOCK dropping until this monster settles
+            // LOCK dropping until physics stabilize
             dropLocked = true;
             updateDropLockState();
 
@@ -970,11 +993,14 @@
                 updateMonsterPhysics(monsters[i], cappedDeltaTime);
             }
 
-            // Check for collisions and merges
-            checkCollisionsAndMerges();
+            // INTELLIGENT collision and overlap resolution
+            resolveOverlapsAndCollisions();
 
-            // Check if we can unlock dropping
-            if (dropLocked && checkAllMonstersSettled()) {
+            // Check for merges
+            checkForMerges();
+
+            // Check if we can unlock dropping (INTELLIGENT stability check)
+            if (dropLocked && isPhysicsStable()) {
                 dropLocked = false;
                 updateDropLockState();
             }
@@ -994,7 +1020,7 @@
             }
 
             // Update position with time-based movement
-            monster.x += monster.vx * deltaTime * TARGET_FPS; // Normalize for 60fps equivalent
+            monster.x += monster.vx * deltaTime * TARGET_FPS;
             monster.y += monster.vy * deltaTime * TARGET_FPS;
 
             // Apply friction with time-based calculation
@@ -1029,7 +1055,7 @@
 
                 // Limited bounce for heavy monsters
                 if (monster.heavy) {
-                    monster.vy = Math.min(0, monster.vy * 0.15);
+                    monster.vy = Math.min(0, monster.vy * 0.1);
                 } else {
                     monster.vy = -monster.vy * BOUNCE_DAMPING;
                 }
@@ -1053,36 +1079,49 @@
             }
         }
 
-        // Check collisions and merging - EXTENDED to 20 levels
-        function checkCollisionsAndMerges() {
-            for (let i = 0; i < monsters.length; i++) {
-                for (let j = i + 1; j < monsters.length; j++) {
-                    const m1 = monsters[i];
-                    const m2 = monsters[j];
+        // INTELLIGENT overlap resolution - prevents stacking issues
+        function resolveOverlapsAndCollisions() {
+            let iterations = 0;
+            let hasOverlaps = true;
 
-                    if (m1.merging || m2.merging) continue;
+            // Iterative overlap resolution with limit
+            while (hasOverlaps && iterations < MAX_OVERLAP_ITERATIONS) {
+                hasOverlaps = false;
+                iterations++;
 
-                    const dx = m1.x - m2.x;
-                    const dy = m1.y - m2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const minDistance = m1.radius + m2.radius;
+                for (let i = 0; i < monsters.length; i++) {
+                    for (let j = i + 1; j < monsters.length; j++) {
+                        const m1 = monsters[i];
+                        const m2 = monsters[j];
 
-                    if (distance < minDistance) {
-                        if (m1.type === m2.type && m1.type < 20) {
-                            mergeMonsters(i, j);
-                            return;
-                        } else {
-                            // Physical collision - HEAVY monsters resist movement
+                        if (m1.merging || m2.merging) continue;
+
+                        const dx = m1.x - m2.x;
+                        const dy = m1.y - m2.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDistance = m1.radius + m2.radius;
+
+                        if (distance < minDistance && distance > 0) {
+                            hasOverlaps = true;
+
+                            // Calculate separation
                             const overlap = minDistance - distance;
-                            const separationX = (dx / distance) * overlap * 0.5;
-                            const separationY = (dy / distance) * overlap * 0.5;
+                            const separationX = (dx / distance) * overlap * 0.51; // Slightly over half
+                            const separationY = (dy / distance) * overlap * 0.51;
 
+                            // Separate monsters
                             m1.x += separationX;
                             m1.y += separationY;
                             m2.x -= separationX;
                             m2.y -= separationY;
 
-                            // Reduced momentum transfer for heavy monsters
+                            // Keep within bounds
+                            m1.x = Math.max(m1.radius, Math.min(worldWidth - m1.radius, m1.x));
+                            m2.x = Math.max(m2.radius, Math.min(worldWidth - m2.radius, m2.x));
+                            m1.y = Math.max(m1.radius, m1.y);
+                            m2.y = Math.max(m2.radius, m2.y);
+
+                            // Transfer momentum only if not heavy
                             if (!m1.heavy && !m2.heavy) {
                                 const relativeVelocityX = m1.vx - m2.vx;
                                 const relativeVelocityY = m1.vy - m2.vy;
@@ -1090,12 +1129,36 @@
                                 const separationVelocityX = relativeVelocityX * separationX / minDistance;
                                 const separationVelocityY = relativeVelocityY * separationY / minDistance;
 
-                                m1.vx -= separationVelocityX * 0.4;
-                                m1.vy -= separationVelocityY * 0.4;
-                                m2.vx += separationVelocityX * 0.4;
-                                m2.vy += separationVelocityY * 0.4;
+                                m1.vx -= separationVelocityX * 0.3;
+                                m1.vy -= separationVelocityY * 0.3;
+                                m2.vx += separationVelocityX * 0.3;
+                                m2.vy += separationVelocityY * 0.3;
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        // Check for merges - separated from collision resolution
+        function checkForMerges() {
+            for (let i = 0; i < monsters.length; i++) {
+                for (let j = i + 1; j < monsters.length; j++) {
+                    const m1 = monsters[i];
+                    const m2 = monsters[j];
+
+                    if (m1.merging || m2.merging) continue;
+                    if (m1.type !== m2.type || m1.type >= 20) continue;
+
+                    const dx = m1.x - m2.x;
+                    const dy = m1.y - m2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = m1.radius + m2.radius;
+
+                    // Merge when monsters are close and both are settled or heavy
+                    if (distance < minDistance * 0.8 && (m1.settled || m1.heavy) && (m2.settled || m2.heavy)) {
+                        mergeMonsters(i, j);
+                        return;
                     }
                 }
             }
@@ -1127,9 +1190,9 @@
                     id: Date.now() + Math.random(),
                     type: newLevel,
                     x: (m1.x + m2.x) / 2,
-                    y: (m1.y + m2.y) / 2,
-                    vx: (m1.vx + m2.vx) * 0.3,
-                    vy: (m1.vy + m2.vy) * 0.3,
+                    y: Math.max((m1.y + m2.y) / 2, newRadius), // Ensure it's not too high
+                    vx: (m1.vx + m2.vx) * 0.2, // Reduced velocity
+                    vy: Math.abs((m1.vy + m2.vy) * 0.2), // Always downward
                     radius: newRadius,
                     element: null,
                     merging: false,
