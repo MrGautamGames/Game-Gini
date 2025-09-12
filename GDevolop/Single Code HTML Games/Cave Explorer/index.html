@@ -194,72 +194,6 @@
             font-weight: 600;
         }
 
-        /* Touch Controls */
-        .touch-controls {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background: linear-gradient(to top, rgba(0,20,40,0.8), transparent);
-            display: none;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .touch-pad {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(0,200,255,0.3), rgba(0,200,255,0.1));
-            border: 2px solid rgba(0,200,255,0.6);
-            border-radius: 50%;
-            touch-action: none;
-            box-shadow: 0 0 20px rgba(0,200,255,0.4);
-            pointer-events: all;
-        }
-
-        .touch-stick {
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            background: radial-gradient(circle, #00c8ff, #0080ff);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.1s ease;
-            box-shadow: 0 0 15px rgba(0,200,255,0.6);
-        }
-
-        .dash-button {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, rgba(0,255,136,0.3), rgba(0,255,136,0.1));
-            border: 3px solid rgba(0,255,136,0.8);
-            border-radius: 50%;
-            color: #00ff88;
-            font-weight: bold;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
-            box-shadow: 0 0 20px rgba(0,255,136,0.4);
-            transition: all 0.1s ease;
-            pointer-events: all;
-        }
-
-        .dash-button:active {
-            background: radial-gradient(circle, rgba(0,255,136,0.5), rgba(0,255,136,0.2));
-            transform: scale(0.95);
-        }
-
         /* Guide Styles */
         .guide-section {
             text-align: left;
@@ -297,6 +231,24 @@
             font-size: 12px;
         }
 
+        /* Touch Control Indicators */
+        .touch-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 200, 255, 0.2);
+            color: #00c8ff;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+            z-index: 20;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .game-hud {
@@ -317,6 +269,10 @@
             .menu-content {
                 padding: 15px;
             }
+
+            .touch-indicator {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -329,7 +285,7 @@
                 Navigate through endless underground caverns with your advanced jetpack!
             </p>
             <p style="margin: 15px 0; font-size: 1em; color: #ffaa00;">
-                🦇 Dodge fixed cave bats • 🪨 Avoid strategic rock hazards • 🔋 Collect battery packs
+                🦇 Dodge cave bats • 🪨 Avoid rock hazards • 🔋 Collect battery packs
             </p>
             <div style="margin: 30px 0;">
                 <button class="menu-button" onclick="startGame()">🚀 START MISSION</button>
@@ -348,32 +304,32 @@
 
             <div class="guide-section">
                 <h3>🚀 The Mission</h3>
-                <p>Navigate through dangerous cave systems filled with strategically placed bats, rock hazards, and power-ups. Master your jetpack and fuel management!</p>
+                <p>Navigate through dangerous cave systems filled with bats, rock hazards, and power-ups. Master your jetpack controls for smooth flight!</p>
             </div>
 
             <div class="guide-section">
                 <h3>⚡ Game Elements</h3>
                 <ul>
-                    <li><strong>🦇 Cave Bats:</strong> Fixed positions that move toward you - time your movements carefully</li>
-                    <li><strong>🪨 Rock Hazards:</strong> Strategically placed obstacles in challenging positions</li>
-                    <li><strong>🔋 Battery Packs:</strong> Fully restore your jetpack fuel - collect regularly</li>
+                    <li><strong>🦇 Cave Bats:</strong> Fixed positions that move toward you - plan your route carefully</li>
+                    <li><strong>🪨 Rock Hazards:</strong> Strategically placed obstacles in challenging formations</li>
+                    <li><strong>🔋 Battery Packs:</strong> Fully restore your jetpack fuel - essential for survival</li>
                     <li><strong>🛡️ Immunity Shields:</strong> 5 seconds of invincibility for dangerous sections</li>
                 </ul>
             </div>
 
             <div class="guide-section">
                 <h3>🎮 Controls</h3>
-                <p><strong>PC:</strong> <span class="key-highlight">WASD</span> or <span class="key-highlight">Arrows</span> = Jetpack • <span class="key-highlight">SPACE</span> = Emergency Dash</p>
-                <p><strong>Mobile:</strong> Virtual Joystick + Dash Button</p>
+                <p><strong>PC:</strong> <span class="key-highlight">WASD</span> or <span class="key-highlight">Arrow Keys</span> = Jetpack Direction</p>
+                <p><strong>Mobile:</strong> Touch anywhere on screen for smooth directional control</p>
             </div>
 
             <div class="guide-section">
                 <h3>🏆 Pro Strategies</h3>
                 <ul>
-                    <li>Bats spawn at fixed positions but move toward you - plan your route</li>
                     <li>Collect battery packs before your fuel gets critically low</li>
-                    <li>Use immunity shields before entering high-risk areas</li>
-                    <li>Emergency dash through tight spots to escape danger</li>
+                    <li>Use immunity shields strategically before entering danger zones</li>
+                    <li>Bats move toward you - time your movements to avoid them</li>
+                    <li>Smooth movements are key - avoid sudden direction changes</li>
                 </ul>
             </div>
 
@@ -425,12 +381,9 @@
         🛡️ IMMUNITY ACTIVE <span id="immunityTimer">5</span>s
     </div>
 
-    <!-- Touch Controls -->
-    <div id="touchControls" class="touch-controls">
-        <div class="touch-pad" id="touchPad">
-            <div class="touch-stick" id="touchStick"></div>
-        </div>
-        <div class="dash-button" id="dashButton">DASH</div>
+    <!-- Touch Control Indicator -->
+    <div id="touchIndicator" class="touch-indicator">
+        Touch screen for smooth jetpack control
     </div>
 
     <script>
@@ -463,11 +416,9 @@
         let gameTime = 0;
 
         // Touch control variables
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchCurrentX = 0;
-        let touchCurrentY = 0;
-        let isTouching = false;
+        let touchActive = false;
+        let touchX = 0;
+        let touchY = 0;
 
         // Player with jetpack
         const player = {
@@ -478,28 +429,30 @@
             velocityX: 0,
             velocityY: 0,
             speed: 4,
-            dashCooldown: 0,
             fuel: 100,
             maxFuel: 100,
-            fuelConsumption: 0.4,
-            fuelRegeneration: 0.1, // Slower regen to make batteries important
+            fuelConsumption: 0.35,
+            fuelRegeneration: 0.08,
             isImmune: false,
             immunityTimer: 0,
+
+            // Shield position tracking
+            shieldX: 0,
+            shieldY: 0,
 
             // Animation properties
             frame: 0,
             animationSpeed: 0.2,
             facing: 1,
             isThrusting: false,
-            isDashing: false,
             jetpackFlame: 0
         };
 
         // Game objects
-        let caveBats = []; // Fixed position bats in cave
-        let rockHazards = []; // Strategically placed rocks
-        let batteryPacks = []; // Fuel restoration items
-        let immunityShields = []; // Shield power-ups
+        let caveBats = [];
+        let rockHazards = [];
+        let batteryPacks = [];
+        let immunityShields = [];
         let particles = [];
         let caveWalls = [];
         let jetpackParticles = [];
@@ -509,80 +462,52 @@
         // Spawn timers
         let batSpawnTimer = 0;
         let rockSpawnTimer = 0;
-        let batterySpawnTimer = 0;
 
-        // Audio context
+        // Audio context and music
         let audioContext;
+        let backgroundMusic = null;
+        let menuMusic = null;
+        let currentMusic = null;
 
         // Initialize controls
         function initControls() {
             if (isTouchDevice) {
-                document.getElementById('touchControls').style.display = 'block';
                 setupTouchControls();
             } else {
                 setupKeyboardControls();
             }
         }
 
-        // Touch controls setup
+        // Flappy Bird style touch controls
         function setupTouchControls() {
-            const touchPad = document.getElementById('touchPad');
-            const touchStick = document.getElementById('touchStick');
-            const dashButton = document.getElementById('dashButton');
-
-            touchPad.addEventListener('touchstart', (e) => {
+            canvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                const rect = touchPad.getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                touchStartX = centerX;
-                touchStartY = centerY;
-                isTouching = true;
-            });
-
-            touchPad.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                if (!isTouching) return;
-
-                const rect = touchPad.getBoundingClientRect();
+                const rect = canvas.getBoundingClientRect();
                 const touch = e.touches[0];
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                touchCurrentX = touch.clientX - rect.left;
-                touchCurrentY = touch.clientY - rect.top;
-
-                const deltaX = touchCurrentX - centerX;
-                const deltaY = touchCurrentY - centerY;
-                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                const maxDistance = 30;
-
-                if (distance > maxDistance) {
-                    const angle = Math.atan2(deltaY, deltaX);
-                    touchCurrentX = centerX + Math.cos(angle) * maxDistance;
-                    touchCurrentY = centerY + Math.sin(angle) * maxDistance;
-                }
-
-                touchStick.style.left = touchCurrentX - 17.5 + 'px';
-                touchStick.style.top = touchCurrentY - 17.5 + 'px';
+                touchActive = true;
+                touchX = (touch.clientX - rect.left) / rect.width;
+                touchY = (touch.clientY - rect.top) / rect.height;
             });
 
-            touchPad.addEventListener('touchend', (e) => {
+            canvas.addEventListener('touchmove', (e) => {
                 e.preventDefault();
-                isTouching = false;
-                touchStick.style.left = '50%';
-                touchStick.style.top = '50%';
-                touchStick.style.transform = 'translate(-50%, -50%)';
-                touchCurrentX = touchStartX;
-                touchCurrentY = touchStartY;
+                if (!touchActive) return;
+
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                touchX = (touch.clientX - rect.left) / rect.width;
+                touchY = (touch.clientY - rect.top) / rect.height;
             });
 
-            dashButton.addEventListener('touchstart', (e) => {
+            canvas.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                if (gameState === 'playing' && player.dashCooldown <= 0) {
-                    dash();
-                }
+                touchActive = false;
             });
+
+            // Prevent scrolling
+            document.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+            }, { passive: false });
         }
 
         // Keyboard controls
@@ -591,12 +516,6 @@
         function setupKeyboardControls() {
             document.addEventListener('keydown', (e) => {
                 keys[e.code] = true;
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    if (gameState === 'playing' && player.dashCooldown <= 0) {
-                        dash();
-                    }
-                }
                 if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                     e.preventDefault();
                 }
@@ -607,13 +526,109 @@
             });
         }
 
-        // Audio
+        // Audio and music initialization
         function initAudio() {
             try {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                createBackgroundMusic();
+                createMenuMusic();
             } catch (e) {
                 console.log('Audio not supported');
             }
+        }
+
+        // Create background music using Web Audio API
+        function createBackgroundMusic() {
+            if (!audioContext) return;
+
+            const musicGain = audioContext.createGain();
+            musicGain.connect(audioContext.destination);
+            musicGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+
+            // Create a simple ambient background track
+            function playAmbientTone(frequency, startTime, duration) {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(musicGain);
+
+                oscillator.frequency.setValueAtTime(frequency, startTime);
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.5);
+                gainNode.gain.linearRampToValueAtTime(0.3, startTime + duration - 0.5);
+                gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            }
+
+            // Ambient cave exploration music
+            function startBackgroundMusic() {
+                const now = audioContext.currentTime;
+                const baseFreq = 110; // A2
+
+                // Deep drone base
+                playAmbientTone(baseFreq, now, 8);
+                playAmbientTone(baseFreq * 1.5, now + 2, 6);
+                playAmbientTone(baseFreq * 2, now + 4, 4);
+
+                // Schedule next cycle
+                setTimeout(() => {
+                    if (gameState === 'playing' && backgroundMusic) {
+                        startBackgroundMusic();
+                    }
+                }, 6000);
+            }
+
+            backgroundMusic = { start: startBackgroundMusic, gain: musicGain };
+        }
+
+        // Create menu music
+        function createMenuMusic() {
+            if (!audioContext) return;
+
+            const musicGain = audioContext.createGain();
+            musicGain.connect(audioContext.destination);
+            musicGain.gain.setValueAtTime(0.08, audioContext.currentTime);
+
+            function playMenuTone(frequency, startTime, duration) {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(musicGain);
+
+                oscillator.frequency.setValueAtTime(frequency, startTime);
+                oscillator.type = 'triangle';
+
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.2);
+                gainNode.gain.linearRampToValueAtTime(0.4, startTime + duration - 0.2);
+                gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            }
+
+            function startMenuMusic() {
+                const now = audioContext.currentTime;
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+
+                notes.forEach((freq, i) => {
+                    playMenuTone(freq, now + i * 1.5, 1.2);
+                });
+
+                setTimeout(() => {
+                    if ((gameState === 'start' || gameState === 'gameOver') && menuMusic) {
+                        startMenuMusic();
+                    }
+                }, 8000);
+            }
+
+            menuMusic = { start: startMenuMusic, gain: musicGain };
         }
 
         function playSound(frequency, duration, type = 'sine', volume = 0.05) {
@@ -635,19 +650,44 @@
             oscillator.stop(audioContext.currentTime + duration);
         }
 
+        // Start appropriate music
+        function startMusic(type) {
+            if (!audioContext) return;
+
+            // Stop current music
+            stopMusic();
+
+            if (type === 'menu' && menuMusic) {
+                currentMusic = menuMusic;
+                menuMusic.start();
+            } else if (type === 'game' && backgroundMusic) {
+                currentMusic = backgroundMusic;
+                backgroundMusic.start();
+            }
+        }
+
+        function stopMusic() {
+            currentMusic = null;
+        }
+
         // Get input values
         function getInputValues() {
             let inputX = 0;
             let inputY = 0;
 
-            if (isTouchDevice && isTouching) {
-                const rect = document.getElementById('touchPad').getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
+            if (isTouchDevice && touchActive) {
+                // Convert touch position to smooth input
+                const playerCenterX = (player.x + player.width / 2) / canvas.width;
+                const playerCenterY = (player.y + player.height / 2) / canvas.height;
 
-                inputX = (touchCurrentX - centerX) / 30;
-                inputY = (touchCurrentY - centerY) / 30;
+                inputX = (touchX - playerCenterX) * 2; // Smooth horizontal control
+                inputY = (touchY - playerCenterY) * 2; // Smooth vertical control
+
+                // Limit input range
+                inputX = Math.max(-1, Math.min(1, inputX));
+                inputY = Math.max(-1, Math.min(1, inputY));
             } else {
+                // Keyboard input
                 if (keys['KeyW'] || keys['ArrowUp']) inputY -= 1;
                 if (keys['KeyS'] || keys['ArrowDown']) inputY += 1;
                 if (keys['KeyA'] || keys['ArrowLeft']) inputX -= 1;
@@ -655,32 +695,6 @@
             }
 
             return { x: inputX, y: inputY };
-        }
-
-        // Dash ability
-        function dash() {
-            if (player.fuel < 20) return;
-
-            player.dashCooldown = 80;
-            player.isDashing = true;
-            player.fuel -= 20;
-            player.velocityX += player.speed * 5 * player.facing;
-            playSound(1400, 0.12, 'square', 0.08);
-
-            setTimeout(() => { player.isDashing = false; }, 250);
-
-            // Dash particles
-            for (let i = 0; i < 25; i++) {
-                particles.push({
-                    x: player.x + player.width / 2,
-                    y: player.y + Math.random() * player.height,
-                    velocityX: -Math.random() * 15 - 4,
-                    velocityY: (Math.random() - 0.5) * 10,
-                    life: 35,
-                    color: '#00ffcc',
-                    size: Math.random() * 3 + 2
-                });
-            }
         }
 
         // Generate cave walls
@@ -738,11 +752,10 @@
             return safeTop + Math.random() * (safeBottom - safeTop);
         }
 
-        // Generate fixed position cave bats
+        // Generate cave bats
         function generateCaveBats() {
             batSpawnTimer++;
 
-            // Spawn bats every 3-5 seconds
             if (batSpawnTimer > 180 + Math.random() * 120) {
                 batSpawnTimer = 0;
 
@@ -757,13 +770,10 @@
                     velocityX: 0,
                     velocityY: 0,
                     wingFlap: Math.random() * Math.PI * 2,
-
-                    // Fixed movement pattern
                     fixedTargetX: player.x,
                     fixedTargetY: player.y,
                     moveSpeed: 1.2 + speedMultiplier * 0.3,
                     moveTimer: 0,
-
                     health: 1
                 });
 
@@ -771,15 +781,13 @@
             }
         }
 
-        // Generate strategic rock hazards
+        // Generate rock hazards
         function generateRockHazards() {
             rockSpawnTimer++;
 
-            // Spawn rocks every 4-7 seconds
             if (rockSpawnTimer > 240 + Math.random() * 180) {
                 rockSpawnTimer = 0;
 
-                // Choose strategic placement pattern
                 const pattern = Math.random();
 
                 if (pattern < 0.4) {
@@ -799,7 +807,7 @@
                         type: 'static'
                     });
                 } else if (pattern < 0.7) {
-                    // Vertical line of rocks (gap in middle)
+                    // Vertical line with gap
                     const rockX = canvas.width;
                     const centerY = canvas.height / 2;
                     const gapSize = 100;
@@ -840,7 +848,7 @@
                         }
                     }
                 } else {
-                    // Horizontal line of rocks (gap for passage)
+                    // Horizontal line with gap
                     const rockY = getSafeYPosition(canvas.width, 15, 50);
                     const gapStart = Math.random() * 150 + 50;
                     const gapSize = 80;
@@ -865,9 +873,8 @@
             }
         }
 
-        // Generate battery packs regularly
+        // Generate battery packs
         function generateBatteryPacks() {
-            // Spawn battery every 8-12 seconds
             if (gameTime % (480 + Math.floor(Math.random() * 240)) === 0) {
                 const batteryX = canvas.width;
                 const batteryY = getSafeYPosition(batteryX, 20, 60);
@@ -904,7 +911,7 @@
             }
         }
 
-        // Update player
+        // Update player with smooth movement
         function updatePlayer() {
             const input = getInputValues();
             let thrustActive = false;
@@ -918,6 +925,10 @@
                     player.isImmune = false;
                     document.getElementById('immunityIndicator').style.display = 'none';
                 }
+
+                // Update shield position to follow player smoothly
+                player.shieldX = player.x;
+                player.shieldY = player.y;
 
                 // Immunity particles
                 if (Math.random() < 0.3) {
@@ -933,11 +944,12 @@
                 }
             }
 
-            // Jetpack thrust mechanics
+            // Smooth jetpack thrust mechanics
             if (Math.abs(input.x) > 0.1 || Math.abs(input.y) > 0.1) {
                 if (player.fuel > 0) {
-                    player.velocityX += input.x * 0.7;
-                    player.velocityY += input.y * 0.6;
+                    // Smooth acceleration based on input
+                    player.velocityX += input.x * 0.6;
+                    player.velocityY += input.y * 0.5;
                     player.fuel -= player.fuelConsumption;
                     player.isThrusting = true;
                     thrustActive = true;
@@ -946,7 +958,7 @@
                         player.facing = input.x > 0 ? 1 : -1;
                     }
 
-                    // Jetpack particles
+                    // Enhanced jetpack particles
                     if (Math.random() < 0.8) {
                         jetpackParticles.push({
                             x: player.x + player.width / 2 - player.facing * 10,
@@ -963,57 +975,66 @@
                 player.isThrusting = false;
             }
 
-            // Fuel regeneration (slower to make batteries important)
+            // Fuel regeneration
             if (!thrustActive && player.fuel < player.maxFuel) {
                 player.fuel += player.fuelRegeneration;
             }
             player.fuel = Math.max(0, Math.min(player.maxFuel, player.fuel));
 
             // Gravity
-            player.velocityY += 0.18;
+            player.velocityY += 0.15;
 
-            // Air resistance
-            player.velocityX *= 0.90;
-            player.velocityY *= 0.96;
+            // Smooth air resistance for better control
+            player.velocityX *= 0.92;
+            player.velocityY *= 0.97;
 
             // Speed limits
-            const maxSpeedX = player.speed * 2.5;
-            const maxSpeedY = player.speed * 2;
+            const maxSpeedX = player.speed * 2.2;
+            const maxSpeedY = player.speed * 1.8;
             player.velocityX = Math.max(-maxSpeedX, Math.min(maxSpeedX, player.velocityX));
             player.velocityY = Math.max(-maxSpeedY, Math.min(maxSpeedY, player.velocityY));
 
-            // Update position
+            // Smooth position update
             player.x += player.velocityX;
             player.y += player.velocityY;
 
             // Boundary checking
-            if (player.x < 0) player.x = 0;
-            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
-            if (player.y < 0) player.y = 0;
-            if (player.y > canvas.height - player.height) player.y = canvas.height - player.height;
+            if (player.x < 0) {
+                player.x = 0;
+                player.velocityX = 0;
+            }
+            if (player.x > canvas.width - player.width) {
+                player.x = canvas.width - player.width;
+                player.velocityX = 0;
+            }
+            if (player.y < 0) {
+                player.y = 0;
+                player.velocityY = 0;
+            }
+            if (player.y > canvas.height - player.height) {
+                player.y = canvas.height - player.height;
+                player.velocityY = 0;
+            }
 
             // Animation
             player.frame += player.animationSpeed;
             player.jetpackFlame += 0.6;
-
-            // Dash cooldown
-            if (player.dashCooldown > 0) player.dashCooldown--;
         }
 
-        // Update cave bats (fixed position movement toward player)
+        // Update cave bats
         function updateCaveBats() {
             for (let i = caveBats.length - 1; i >= 0; i--) {
                 const bat = caveBats[i];
 
                 bat.moveTimer++;
 
-                // Update fixed target every 60 frames (1 second)
+                // Update target every 60 frames
                 if (bat.moveTimer % 60 === 0) {
                     bat.fixedTargetX = player.x;
                     bat.fixedTargetY = player.y;
                 }
 
-                // Move toward fixed target position
+                // Move toward target
                 const dx = bat.fixedTargetX - bat.x;
                 const dy = bat.fixedTargetY - bat.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -1023,7 +1044,7 @@
                     bat.velocityY += (dy / distance) * bat.moveSpeed * 0.02;
                 }
 
-                // Apply movement with speed limits
+                // Speed limits
                 const currentSpeed = Math.sqrt(bat.velocityX * bat.velocityX + bat.velocityY * bat.velocityY);
                 const maxSpeed = bat.moveSpeed;
 
@@ -1032,20 +1053,20 @@
                     bat.velocityY = (bat.velocityY / currentSpeed) * maxSpeed;
                 }
 
-                // Apply physics
+                // Physics
                 bat.velocityX *= 0.95;
                 bat.velocityY *= 0.95;
 
                 // Update position
-                bat.x += bat.velocityX - gameSpeed; // Also moves with world
+                bat.x += bat.velocityX - gameSpeed;
                 bat.y += bat.velocityY;
                 bat.wingFlap += 0.4;
 
-                // Keep bats within screen bounds
+                // Boundaries
                 if (bat.y < 20) bat.y = 20;
                 if (bat.y > canvas.height - bat.height - 20) bat.y = canvas.height - bat.height - 20;
 
-                // Remove bats that are too far off screen
+                // Remove off-screen bats
                 if (bat.x < -100) {
                     caveBats.splice(i, 1);
                     batsAvoided++;
@@ -1059,12 +1080,10 @@
             for (let i = rockHazards.length - 1; i >= 0; i--) {
                 const rock = rockHazards[i];
 
-                // Update position
                 rock.x += rock.velocityX;
                 rock.y += rock.velocityY;
                 rock.rotation += rock.rotationSpeed;
 
-                // Remove rocks that are off screen
                 if (rock.x < -rock.width) {
                     rockHazards.splice(i, 1);
                     rocksAvoided++;
@@ -1089,7 +1108,6 @@
                     player.y < battery.y + battery.height &&
                     player.y + player.height > battery.y) {
 
-                    // Restore fuel completely
                     player.fuel = player.maxFuel;
                     battery.collected = true;
                     batteriesCollected++;
@@ -1111,7 +1129,7 @@
                     }
                 }
 
-                // Add sparkle particles
+                // Sparkle particles
                 if (battery.sparkleTimer % 10 === 0 && !battery.collected) {
                     batteryParticles.push({
                         x: battery.x + Math.random() * battery.width,
@@ -1148,12 +1166,13 @@
 
                     // Activate immunity
                     player.isImmune = true;
-                    player.immunityTimer = 300; // 5 seconds
+                    player.immunityTimer = 300;
+                    player.shieldX = player.x;
+                    player.shieldY = player.y;
                     shield.collected = true;
                     shieldsCollected++;
                     score += 100;
 
-                    // Show immunity indicator
                     document.getElementById('immunityIndicator').style.display = 'block';
                     document.getElementById('immunityTimer').textContent = '5';
 
@@ -1324,12 +1343,14 @@
 
             ctx.save();
 
-            // Immunity shield effect
+            // Immunity shield effect that moves with player
             if (player.isImmune) {
-                ctx.shadowColor = '#00ffcc';
-                ctx.shadowBlur = 25;
                 const shieldRadius = Math.max(w, h) / 2 + 8 + Math.sin(Date.now() * 0.01) * 3;
 
+                ctx.shadowColor = '#00ffcc';
+                ctx.shadowBlur = 25;
+
+                // Shield follows player position exactly
                 ctx.strokeStyle = 'rgba(0, 255, 204, 0.6)';
                 ctx.lineWidth = 3;
                 ctx.beginPath();
@@ -1347,12 +1368,6 @@
             if (player.facing < 0) {
                 ctx.scale(-1, 1);
                 ctx.translate(-x - w, 0);
-            }
-
-            // Dash glow
-            if (player.isDashing) {
-                ctx.shadowColor = '#00ffcc';
-                ctx.shadowBlur = 30;
             }
 
             // Character colors
@@ -1753,6 +1768,9 @@
             initAudio();
             gameState = 'playing';
 
+            // Start background music
+            startMusic('game');
+
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('gameOver').style.display = 'none';
             document.getElementById('gameHUD').style.display = 'flex';
@@ -1771,7 +1789,6 @@
             gameTime = 0;
             batSpawnTimer = 0;
             rockSpawnTimer = 0;
-            batterySpawnTimer = 0;
 
             // Clear arrays
             caveBats = [];
@@ -1792,7 +1809,6 @@
             player.fuel = 100;
             player.frame = 0;
             player.facing = 1;
-            player.dashCooldown = 0;
             player.isImmune = false;
             player.immunityTimer = 0;
 
@@ -1804,6 +1820,9 @@
         function gameOver() {
             gameState = 'gameOver';
             document.getElementById('gameHUD').style.display = 'none';
+
+            // Start menu music
+            startMusic('menu');
 
             const finalDistance = Math.floor(distance / 15);
             document.getElementById('finalScore').textContent = `Mission Score: ${score} points`;
@@ -1832,6 +1851,9 @@
             document.getElementById('gameOver').style.display = 'none';
             document.getElementById('gameHUD').style.display = 'none';
             document.getElementById('startScreen').style.display = 'flex';
+
+            // Start menu music
+            startMusic('menu');
         }
 
         function showHowToPlay() {
@@ -1848,6 +1870,7 @@
         window.addEventListener('load', () => {
             resizeCanvas();
             initControls();
+            startMusic('menu'); // Start with menu music
             gameLoop();
         });
 
