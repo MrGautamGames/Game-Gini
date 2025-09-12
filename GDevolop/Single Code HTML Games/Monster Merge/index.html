@@ -572,7 +572,7 @@
     <div id="startScreen" class="menu-screen">
         <div class="menu-content">
             <h1 class="game-title">🪣 MONSTER MERGE 🧌</h1>
-            <p class="menu-subtitle">20 monster levels! Heavy physics, no bouncing up! More varieties, faster filling!</p>
+            <p class="menu-subtitle">Fixed gravity! Normal falling speed on mobile and desktop!</p>
             <div style="margin: 30px 0;">
                 <button class="menu-button" onclick="startGame()">🚀 START MERGING</button>
                 <button class="menu-button" onclick="showHowToPlay()">📖 HOW TO PLAY</button>
@@ -590,7 +590,7 @@
 
             <div class="guide-section">
                 <h3>🎯 Professional Drop System</h3>
-                <p>Click in the DROP ZONE above the basket to drop monsters! Heavy physics prevent bouncing up and out.</p>
+                <p>Click in the DROP ZONE above the basket to drop monsters! Normal gravity speed on all devices.</p>
             </div>
 
             <div class="guide-section">
@@ -599,16 +599,16 @@
                     <li><strong>More Varieties:</strong> 20 different monster levels for extended gameplay</li>
                     <li><strong>Faster Filling:</strong> More lower-level monsters means quicker bucket action</li>
                     <li><strong>Heavy Physics:</strong> Once dropped, monsters stay down - no bouncing up!</li>
-                    <li><strong>Ultimate Goal:</strong> Reach the legendary Level 20 Diamond!</li>
+                    <li><strong>Perfect Speed:</strong> Normal falling speed on mobile and desktop!</li>
                 </ul>
             </div>
 
             <div class="guide-section">
                 <h3>⚡ Enhanced Physics</h3>
                 <ul>
-                    <li>Monsters become heavy after falling - stay settled</li>
+                    <li>Fixed gravity for perfect falling speed</li>
                     <li>No bouncing up and out of the basket</li>
-                    <li>Realistic gravity and collision detection</li>
+                    <li>Realistic collision detection</li>
                     <li>Stable merging without disturbance</li>
                 </ul>
             </div>
@@ -698,12 +698,12 @@
         let monsters = []; // Array of physics monsters
         let nextMonsterType = 1;
 
-        // Enhanced physics constants for heavy monsters
-        const GRAVITY = 0.35;
-        const BOUNCE_DAMPING = 0.15; // Much less bouncing
+        // FIXED physics constants for proper gravity on all devices
+        const GRAVITY = 0.6; // INCREASED from 0.35 for normal falling speed
+        const BOUNCE_DAMPING = 0.2; // Slightly increased for more realistic bouncing
         const FRICTION = 0.92;
-        const SETTLE_THRESHOLD = 0.8; // Easier settling
-        const HEAVY_FACTOR = 0.05; // Heavy multiplier after settling
+        const SETTLE_THRESHOLD = 1.2; // Slightly increased for better settling
+        const HEAVY_FACTOR = 0.1; // Heavy multiplier after settling
 
         // EXTENDED Size hierarchy - 20 levels for more variety!
         const MONSTER_SIZES = {
@@ -903,14 +903,14 @@
             requestAnimationFrame(physicsStep);
         }
 
-        // Update individual monster physics - HEAVY PHYSICS (no bouncing up!)
+        // Update individual monster physics - FIXED GRAVITY for normal speed!
         function updateMonsterPhysics(monster) {
             if (monster.merging) return;
 
-            // Apply gravity (reduced for heavy monsters)
+            // Apply NORMAL gravity (increased for proper falling speed)
             if (!monster.settled) {
-                const gravityMultiplier = monster.heavy ? 0.7 : 1;
-                monster.vy += GRAVITY * gravityMultiplier;
+                const gravityMultiplier = monster.heavy ? 0.8 : 1;
+                monster.vy += GRAVITY * gravityMultiplier; // Normal gravity now
             }
 
             // Update position
@@ -918,11 +918,11 @@
             monster.y += monster.vy;
 
             // Apply friction (more friction for heavy monsters)
-            const frictionMultiplier = monster.heavy ? 0.85 : FRICTION;
+            const frictionMultiplier = monster.heavy ? 0.88 : FRICTION;
             monster.vx *= frictionMultiplier;
 
             if (monster.settled || monster.heavy) {
-                monster.vy *= 0.7; // Heavy damping for settled/heavy monsters
+                monster.vy *= 0.75; // Heavy damping for settled/heavy monsters
             }
 
             // Boundary collisions
@@ -936,7 +936,7 @@
                 monster.vx = -monster.vx * BOUNCE_DAMPING;
             }
 
-            // Bottom collision with HEAVY SETTLING (NO BOUNCING UP!)
+            // Bottom collision with HEAVY SETTLING (LIMITED BOUNCING!)
             if (monster.y + monster.radius > worldHeight - 25) {
                 monster.y = worldHeight - 25 - monster.radius;
 
@@ -946,15 +946,15 @@
                     monster.element.classList.add('heavy');
                 }
 
-                // Minimal bounce for heavy monsters
+                // Limited bounce for heavy monsters
                 if (monster.heavy) {
-                    monster.vy = Math.min(0, monster.vy * 0.1); // Only allow downward movement
+                    monster.vy = Math.min(0, monster.vy * 0.15); // Very limited upward movement
                 } else {
                     monster.vy = -monster.vy * BOUNCE_DAMPING;
                 }
 
-                // Check for settling (MUCH easier for heavy monsters)
-                const settleThreshold = monster.heavy ? 0.3 : SETTLE_THRESHOLD;
+                // Check for settling (easier for heavy monsters)
+                const settleThreshold = monster.heavy ? 0.5 : SETTLE_THRESHOLD;
                 if (Math.abs(monster.vy) < settleThreshold && Math.abs(monster.vx) < settleThreshold) {
                     monster.settled = true;
                     monster.vy = 0;
@@ -1007,10 +1007,10 @@
                                 const separationVelocityX = relativeVelocityX * separationX / minDistance;
                                 const separationVelocityY = relativeVelocityY * separationY / minDistance;
 
-                                m1.vx -= separationVelocityX * 0.3; // Reduced impact
-                                m1.vy -= separationVelocityY * 0.3;
-                                m2.vx += separationVelocityX * 0.3;
-                                m2.vy += separationVelocityY * 0.3;
+                                m1.vx -= separationVelocityX * 0.4; // Slightly increased impact
+                                m1.vy -= separationVelocityY * 0.4;
+                                m2.vx += separationVelocityX * 0.4;
+                                m2.vy += separationVelocityY * 0.4;
                             }
                         }
                     }
@@ -1045,8 +1045,8 @@
                     type: newLevel,
                     x: (m1.x + m2.x) / 2,
                     y: (m1.y + m2.y) / 2,
-                    vx: (m1.vx + m2.vx) * 0.2, // Reduced velocity
-                    vy: (m1.vy + m2.vy) * 0.2,
+                    vx: (m1.vx + m2.vx) * 0.3, // Reduced velocity
+                    vy: (m1.vy + m2.vy) * 0.3,
                     radius: newRadius,
                     element: null,
                     merging: false,
